@@ -3,6 +3,10 @@ import { RouterProvider } from "react-router/dom";
 import HomeLayout from "../Layout/HomeLayout";
 import Home from "../components/pages/Home";
 import CategoryNews from "../components/pages/CategoryNews";
+import Login from "../components/pages/Login";
+import Register from "../components/pages/Register";
+import AuthLayout from "../Layout/AuthLayout";
+import NewsDetails from "../components/pages/NewsDetails";
 
 const router = createBrowserRouter([
   {
@@ -22,11 +26,22 @@ const router = createBrowserRouter([
   },
   {
     path: '/auth',
-    element: <h2>Auth</h2>
+    element: <AuthLayout></AuthLayout>,
+    children:[
+      {
+        path: "/auth/login",
+        element: <Login></Login>,
+      },
+      {
+        path: '/auth/register',
+        element: <Register></Register>
+      },
+    ],
   },
   {
-    path: '/news',
-    element: <h2>News</h2>
+    path: '/news-details/:id',
+    element: <NewsDetails></NewsDetails>,
+    loader: ()=> fetch("/news.json")
   },
   {
     path: '/*',
