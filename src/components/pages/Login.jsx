@@ -1,11 +1,12 @@
-import React, { useContext } from "react"; 
-import { Link } from "react-router"; // Retaining the original import from 'react-router'
+import React, { useContext, useState } from "react"; 
+import { Link, useLocation, useNavigate } from "react-router"; // Retaining the original import from 'react-router'
 import { AuthContext } from "../../provider/AuthProvider";
 
 const Login = () => {
-
-  // 👈 FIX: Must use useContext to read the context value
+  const [error,SetError] = useState("");
   const { signIn } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -18,10 +19,11 @@ const Login = () => {
       .then(result => {
         const user = result.user;
         console.log(user);
+        navigate(`${location.state ? location.state : '/'}`)
       })
       .catch((error) => {
         const errorMessage = error.message;
-        alert(errorMessage);
+        SetError(errorMessage)
       });
   };
 
@@ -37,13 +39,16 @@ const Login = () => {
           <fieldset className="fieldset">
 
             <label className=" font-semibold">Email address</label>
-            <input name="email" type="email" className="input" placeholder="Email" />
+            <input name="email" type="email" className="input" placeholder="Email" required/>
 
             <label className="font-semibold">Password</label>
-            <input name="password" type="password" className="input" placeholder="Password" />
+            <input name="password" type="password" className="input" placeholder="Password" required/>
             <div>
               <a className="link link-hover">Forgot password?</a>
             </div>
+            {
+              error && <p className="text-red-700 text-xs">{error}</p>
+            }
             <button type="submit" className="btn btn-neutral mt-4">Login</button>
             <p className="font-semibold text-center pt-5">
               Don't have an accout ? Please{" "}
