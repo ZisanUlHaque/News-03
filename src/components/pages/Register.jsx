@@ -9,7 +9,7 @@ const Register = () => {
 
     const handleRegister = (event) =>{
         event.preventDefault();
-        console.log(event.target)
+        // console.log(event.target)
 
         const form = event.target;
         const name = form.name.value;
